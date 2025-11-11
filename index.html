@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홍길동 회장 프로필</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 기본 스타일 */
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            min-height: 100vh;
+        }
+
+        /* 헤더 스타일 */
+        .header {
+            background-color: #335977;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5em;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 1.2em;
+        }
+
+        /* 메인 콘텐츠와 사이드바 레이아웃 */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: white;
+            word-wrap: break-word;
+        }
+
+        .sidebar {
+            width: 30%;
+            background-color: #edf4fa;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        /* 섹션 제목 스타일 */
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5em;
+            color: #333;
+            margin-top: 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #3b5998;
+            page-break-after: avoid; /* 인쇄 시 제목이 페이지 하단에 단독으로 남지 않도록 */
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        /* 리스트 스타일 */
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar li .icon {
+            color: #3b5998;
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+
+        /* 프로젝트 섹션 스타일 */
+        .project {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .project:nth-child(odd) {
+            background-color: #f9f9f9;
+            border-left-color: #3b5998;
+        }
+
+        .project:nth-child(even) {
+            background-color: #f0f7ff;
+            border-left-color: #3b5998;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .project-header h3 {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .project-header .timeline {
+            font-style: italic;
+            color: #666;
+        }
+
+        .project p {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .project .role {
+            font-weight: bold;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .project .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .project .tech-list span {
+            background-color: #e0e0e0;
+            color: #555;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar, .main-content {
+                width: 100%;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+        }
+        
+        /* 인쇄 최적화 */
+        @media print {
+            body {
+                font-size: 12pt;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .container {
+                box-shadow: none;
+                flex-direction: row;
+                margin: 0;
+                width: 100%;
+            }
+            .sidebar {
+                width: 30%;
+                page-break-after: avoid;
+            }
+            .main-content {
+                width: 70%;
+                page-break-after: avoid;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+            .project {
+                page-break-inside: avoid;
+            }
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>홍길동 (洪吉童)</h1>
+    <p>대기업 회장</p>
+</div>
+
+<div class="container">
+    <div class="sidebar">
+        <div class="section">
+            <h2 class="section-title">개인 정보</h2>
+            <ul>
+                <li><i class="fas fa-user icon"></i> 60대 초반</li>
+                <li><i class="fas fa-flag icon"></i> 대한민국</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">학력</h2>
+            <ul>
+                <li>
+                    <i class="fas fa-graduation-cap icon"></i>
+                    <strong>하버드 경영대학원</strong><br>
+                    MBA (경영학 석사)
+                </li>
+                <li>
+                    <i class="fas fa-university icon"></i>
+                    <strong>서울대학교</strong><br>
+                    경영학과 졸업
+                </li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">연락처</h2>
+            <ul>
+                <li><i class="fas fa-envelope icon"></i> hong.gildong@email.com</li>
+                <li><i class="fas fa-phone icon"></i> +82-10-1234-5678</li>
+                <li><i class="fas fa-home icon"></i> 서울특별시 강남구</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">인격적 특징</h2>
+            <ul>
+                <li><i class="fas fa-seedling icon"></i> 겸손과 온화함</li>
+                <li><i class="fas fa-user-shield icon"></i> 사회적 신뢰</li>
+                <li><i class="fas fa-chalkboard-teacher icon"></i> 멘토형 리더십</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="section">
+            <h2 class="section-title">프로필 요약</h2>
+            <p>
+                대한민국 재계 10대 그룹 중 한 곳의 총수로서, '기업의 이익은 사회와 함께 나눌 때 가장 큰 가치가 있다'는 경영 철학을 강조합니다. 단순히 이윤 추구에 그치지 않고 윤리적 경영, 투명한 의사결정, 장기적 사회 기여를 기업의 핵심 가치로 삼고 있습니다. 혁신과 인재 육성을 기업 성장의 두 축으로 삼는 리더십으로, 국내외에서 한국 기업의 위상을 높이는 데 기여해왔습니다.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">경영 철학 및 리더십</h2>
+            <div class="project">
+                <div class="project-header">
+                    <h3>혁신 중심 경영</h3>
+                </div>
+                <p>기술 혁신과 인재 육성을 기업 성장의 두 축으로 삼아, 미래 산업을 선도하고 있습니다.</p>
+            </div>
+            
+            <div class="project">
+                <div class="project-header">
+                    <h3>사람 중심 리더십</h3>
+                </div>
+                <p>직원 개개인의 행복과 자아실현을 존중하며, "사람이 곧 자산"이라는 가치를 실천하고 있습니다.</p>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <h3>글로벌 전략가</h3>
+                </div>
+                <p>해외 시장 개척과 글로벌 파트너십을 적극적으로 추진하여 한국 기업의 위상을 드높였습니다.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">CSR (기업의 사회적 책임) 활동</h2>
+            <div class="project">
+                <div class="project-header">
+                    <h3>환경 보호</h3>
+                </div>
+                <p>
+                    대규모 친환경 에너지 프로젝트를 추진하여 기업의 탄소 중립 경영을 선언하고, 지속가능한 미래를 위한 노력을 선도하고 있습니다.
+                </p>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <h3>교육 지원</h3>
+                </div>
+                <p>
+                    저소득층 청소년을 위한 장학재단을 설립하고 매년 500명 이상의 학생에게 장학금을 지급하며 미래 인재 양성에 힘쓰고 있습니다.
+                </p>
+            </div>
+            
+            <div class="project">
+                <div class="project-header">
+                    <h3>지역사회 기여</h3>
+                </div>
+                <p>
+                    지방 소멸 위기 지역에 스마트 팩토리와 청년 창업 지원 센터를 설립하여 지역 경제 활성화에 기여하고 있습니다.
+                </p>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <h3>국제 협력</h3>
+                </div>
+                <p>
+                    유엔(UN)의 지속가능발전목표(SDGs)에 맞춘 CSR 캠페인을 글로벌 차원에서 진행하며 국제 사회의 책임 있는 일원으로 활동하고 있습니다.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
