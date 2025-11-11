@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>테트리스</title>
+  <style>
+    body { background: #111; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    #tetris { border: 2px solid #fff; background: #222; }
+    #score { text-align: center; margin-bottom: 10px; font-size: 1.5em; letter-spacing: 0.1em; }
+  </style>
+</head>
+<body>
+  <div>
+    <div id="score">점수: 0</div>
+    <canvas id="tetris" width="200" height="400"></canvas>
+  </div>
+  <script>
+    const canvas = document.getElementById('tetris');
+    const context = canvas.getContext('2d');
+    context.scale(20, 20);
+
+    const scoreEl = document.getElementById('score');
+    let score = 0;
+
+    // 테트로미노 정의
+    const tetrominoes = [
+      [[1,1,1],[0,1,0]],              // T
+      [[0,2,2],[2,2,0]],              // S
+      [[3,3,0],[0,3,3]],              // Z
+      [[4,4,4,4]],                    // I
+      [[5,5],[5,5]],                  // O
+      [[6,0,0],[6,6,6]],              // L
+      [[0,0,7],[7,7,7]]               // J
+    ];
+
+    function createMatrix(w, h) {
+      const matrix = [];
+      while (h--) matrix.push(new Array(w).fill(0));
+      return matrix;
+    }
+
+    const arena = createMatrix(10, 20);
+
+    function collide(arena, player) {
+      const m = player.matrix;
+      const o = player.pos;
+      for (let y = 0; y < m.length; ++y) {
+        for (let x = 0; x < m[y].length; ++x) {
+          if (m[y][x] !== 0) {
+            if (
+              !arena[y + o.y] ||
+              arena[y + o.y][x + o.x] !== 0
+            ) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    }
+
+    function merge(arena, player) {
+      player.matrix.forEach((row, y) => {
+        row.forEach((val, x) => {
+          if (val) {
+            arena[y + player.pos.y][x + player.pos.x] = val;
+          }
+        });
+      });
+    }
+
+    function playerDrop() {
+      player.pos.y++;
+      if (collide(arena, player)) {
+        player.pos.y--;
+        merge(arena, player);
+        playerReset();
+        arenaSweep();
+        updateScore();
+      }
+      dropCounter = 0;
+    }
+
+    function playerMove(dir) {
+      player.pos.x += dir;
+      if (collide(arena, player)) player.pos.x -= dir;
+    }
+
+    function playerReset() {
+      const i = Math.floor(Math.random() * tetrominoes.length);
+      player.matrix = tetrominoes[i].map(row => row.slice());
+      player.pos.y = 0;
+      player.pos.x = Math.floor(arena[0].length / 2) - Math.floor(player.matrix[0].length / 2);
+      if (collide(arena, player)) {
+        arena.forEach(row => row.fill(0));
+        score = 0;
+        updateScore();
+      }
+    }
+
+    function rotate(matrix, dir) {
+      for (let y=0; y<matrix.length; ++y)
+        for (let x=0; x<y; ++x)
+          [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
+      if (dir > 0) matrix.forEach(row => row.reverse());
+      else matrix.reverse();
+    }
+
+    function playerRotate(dir) {
+      const pos = player.pos.x;
+      let offset = 1;
+      rotate(player.matrix, dir);
+      while (collide(arena, player)) {
+        player.pos.x += offset;
+        offset = -(offset + (offset > 0 ? 1 : -1));
+        if (offset > player.matrix[0].length) {
+          rotate(player.matrix, -dir);
+          player.pos.x = pos;
+          return;
+        }
+      }
+    }
+
+    function arenaSweep() {
+      outer: for (let y=arena.length-1; y>=0; y--) {
+        for (let x=0; x<arena[y].length; x++) {
+          if (arena[y][x] === 0) continue outer;
+        }
+        const row = arena.splice(y, 1)[0].fill(0);
+        arena.unshift(row);
+        y++;
+        score += 10;
+      }
+    }
+
+    function drawMatrix(matrix, offset) {
+      matrix.forEach((row, y) => {
+        row.forEach((val, x) => {
+          if (val) {
+            context.fillStyle = ['#000', '#f0f', '#0f0', '#f00', '#0ff', '#ff0', '#ff8000', '#00f'][val];
+            context.fillRect(x + offset.x, y + offset.y, 1, 1);
+            context.strokeStyle = "#333";
+            context.strokeRect(x + offset.x, y + offset.y, 1, 1);
+          }
+        });
+      });
+    }
+
+    function draw() {
+      context.fillStyle = '#222';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      drawMatrix(arena, {x:0, y:0});
+      drawMatrix(player.matrix, player.pos);
+    }
+
+    function updateScore() {
+      scoreEl.innerText = "점수: " + score;
+    }
+
+    let dropCounter = 0;
+    let dropInterval = 500;
+    let lastTime = 0;
+    function update(time=0) {
+      const delta = time - lastTime;
+      lastTime = time;
+      dropCounter += delta;
+      if (dropCounter > dropInterval) playerDrop();
+      draw();
+      requestAnimationFrame(update);
+    }
+
+    document.addEventListener('keydown', event => {
+      if (event.key === "ArrowLeft") playerMove(-1);
+      else if (event.key === "ArrowRight") playerMove(1);
+      else if (event.key === "ArrowDown") playerDrop();
+      else if (event.key === "ArrowUp") playerRotate(1);
+    });
+
+    const player = {
+      pos: {x:0, y:0},
+      matrix: null,
+    };
+
+    playerReset();
+    updateScore();
+    update();
+  </script>
+</body>
+</html>
